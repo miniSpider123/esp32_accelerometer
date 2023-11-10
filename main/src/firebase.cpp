@@ -48,11 +48,9 @@ void connect_firebase()
 
 void send_data()
 {
-    acc_X.set("/acc/ox", random(1, 8));
-    acc_Y.set("/acc/oy", random(1, 8));
-    acc_Z.set("/acc/oz", random(1, 8));
     Serial << FIREBASE_TAG << "Sending data to firebase.\n";
-    // Firebase.update(firebase_data, "/acc/ox", acc_X);
-    // Firebase.update(firebase_data, "/acc/oy", acc_Y);
-    // Firebase.update(firebase_data, "/acc/oz", acc_Z);
+    if (!Firebase.RTDB.pushInt(&firebase_data, "/acc/ox", random(1, 8)) ||
+        !Firebase.RTDB.pushInt(&firebase_data, "/acc/oy", random(1, 8)) ||
+        !Firebase.RTDB.pushInt(&firebase_data, "/acc/oz", random(1, 8)))
+        Serial << FIREBASE_TAG << "Sample dropped.\n";
 }
