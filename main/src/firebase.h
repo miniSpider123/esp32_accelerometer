@@ -3,6 +3,8 @@
 #include <WiFi.h>
 // #include <FirebaseJson.h>
 // #include <FirebaseESP32.h>
+#include <Adafruit_MPU6050.h>
+#include <Adafruit_Sensor.h>
 #include <Firebase_ESP_Client.h>
 
 #define FIREBASE_HOST "https://esp-mgr-default-rtdb.europe-west1.firebasedatabase.app/"
@@ -10,5 +12,5 @@
 #define USER_EMAIL "ankapajak4@gmail.com"
 #define USER_PASSWORD "ESP123mgr"
 
-void connect_firebase();
-void send_data();
+void firebase_connect();
+bool firebase_send_data(sensors_event_t *accelerometer, sensors_event_t *gyroscope);

@@ -8,8 +8,8 @@
 #define ESP_MAXIMUM_RETRY 10
 #define DELAY_TIME 10000
 
-void connect_to_wifi();
+bool wifi_connect();
 
 extern const char *wl_status_to_string(wl_status_t status);
 
-wl_status_t check_network_status();
+wl_status_t wifi_check_status();

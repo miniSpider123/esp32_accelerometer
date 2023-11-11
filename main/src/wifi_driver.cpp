@@ -2,33 +2,33 @@
 #include "print_string.h"
 #include "tags.h"
 
-void connect_to_wifi()
+bool wifi_connect()
 {
-  // WiFi.disconnect();
+  WiFi.disconnect();
   WiFi.begin(ESP_WIFI_SSID, ESP_WIFI_PASS);
   int retry_count = 1;
   while (retry_count++)
   {
-    Serial << COMM_TAG << "Connecting to WiFi...\n";
+    Serial << TAG_COMM << "Connecting to WiFi...\n";
     delay(DELAY_TIME);
     if (WiFi.status() == WL_CONNECTED)
     {
-      Serial << COMM_TAG << "Connected to the WiFi network. SSID: " << ESP_WIFI_SSID << "\n";
-      break;
+      Serial << TAG_COMM << "Connected to the WiFi network. SSID: " << ESP_WIFI_SSID << "\n";
+      return true;
     }
     else
     {
-      Serial << COMM_TAG << "Connecting to the WiFi network failed. Error code: " << wl_status_to_string(WiFi.status()) << "\n";
+      Serial << TAG_COMM << "Connecting to the WiFi network failed. Error code: " << wl_status_to_string(WiFi.status()) << "\n";
       if (retry_count == ESP_MAXIMUM_RETRY)
       {
-        Serial << COMM_TAG << "Too many tries. Check WiFi settings.\n";
-        break;
+        Serial << TAG_COMM << "Too many tries. Check WiFi settings.\n";
+        return false;
       }
     }
   }
 }
 
-wl_status_t check_network_status()
+wl_status_t wifi_check_status()
 {
   return WiFi.status();
 }

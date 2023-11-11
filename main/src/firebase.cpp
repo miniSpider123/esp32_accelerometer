@@ -9,7 +9,7 @@ FirebaseJson acc_X;
 FirebaseJson acc_Y;
 FirebaseJson acc_Z;
 
-void connect_firebase()
+void firebase_connect()
 {
     String uid;
     String path;
@@ -19,13 +19,13 @@ void connect_firebase()
     firebase_auth.user.email = USER_EMAIL;
     firebase_auth.user.password = USER_PASSWORD;
 
-    Serial << FIREBASE_TAG << "Connecting to database...\n";
+    Serial << TAG_FIREBASE << "Connecting to database...\n";
     while (1)
     {
         Firebase.begin(&firebase_config, &firebase_auth);
         Firebase.reconnectWiFi(true);
 
-        Serial << FIREBASE_TAG << "Getting User UID\n";
+        Serial << TAG_FIREBASE << "Getting User UID\n";
         while (firebase_auth.token.uid == "")
         {
             Serial.print('.');
@@ -33,24 +33,29 @@ void connect_firebase()
         }
 
         uid = firebase_auth.token.uid.c_str();
-        Serial << FIREBASE_TAG << "User UID: " << uid << "\n";
+        Serial << TAG_FIREBASE << "User UID: " << uid << "\n";
         path = "esp/" + uid;
 
         if (!Firebase.RTDB.beginStream(&firebase_data, path.c_str()))
-            Serial << FIREBASE_TAG << "Error during stream connecting: " << firebase_data.errorReason().c_str() << ".\n";
+            Serial << TAG_FIREBASE << "Error during stream connecting: " << firebase_data.errorReason().c_str() << ".\n";
         else
         {
-            Serial << FIREBASE_TAG << "Successful connecting to stream.\n";
+            Serial << TAG_FIREBASE << "Successful connecting to stream.\n";
             break;
         }
     }
 }
 
-void send_data()
+bool firebase_send_data(sensors_event_t *accelerometer, sensors_event_t *gyroscope)
 {
-    Serial << FIREBASE_TAG << "Sending data to firebase.\n";
+    Serial << TAG_FIREBASE << "Sending data to firebase.\n";
+    // dwie niezależne fkcje (wysylanie i zbieranie danych); sa niezalezne, wiec
+    // mozna zbierac dane co minute, a wysylac co 5 s; to co zbiera dane wrzuca to do kolejki,
+    // a to co wysyla jak zobaczy, ze jest jedna dana to probuje wyslac; dla >10 danych (brak wifi)
+    // droppuje te dane (bufor w ramie)
+    // dodatkowo: lapanie ok. 10000 danych i wysylac takie duze paczki (np)
     if (!Firebase.RTDB.pushInt(&firebase_data, "/acc/ox", random(1, 8)) ||
         !Firebase.RTDB.pushInt(&firebase_data, "/acc/oy", random(1, 8)) ||
         !Firebase.RTDB.pushInt(&firebase_data, "/acc/oz", random(1, 8)))
-        Serial << FIREBASE_TAG << "Sample dropped.\n";
+        Serial << TAG_FIREBASE << "Sample dropped.\n";
 }
