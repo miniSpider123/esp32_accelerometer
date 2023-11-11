@@ -13,7 +13,6 @@ void setup()
     if (wifi_connect())
     {
         firebase_connect();
-        mpu_initialize();
         if (!mpu_initialize())
         {
             esp_reset();

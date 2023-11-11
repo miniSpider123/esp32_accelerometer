@@ -46,7 +46,7 @@ void firebase_connect()
     }
 }
 
-bool firebase_send_data(sensors_event_t *accelerometer, sensors_event_t *gyroscope)
+void firebase_send_data(sensors_event_t *accelerometer, sensors_event_t *gyroscope)
 {
     Serial << TAG_FIREBASE << "Sending data to firebase.\n";
     // dwie niezależne fkcje (wysylanie i zbieranie danych); sa niezalezne, wiec
@@ -54,8 +54,8 @@ bool firebase_send_data(sensors_event_t *accelerometer, sensors_event_t *gyrosco
     // a to co wysyla jak zobaczy, ze jest jedna dana to probuje wyslac; dla >10 danych (brak wifi)
     // droppuje te dane (bufor w ramie)
     // dodatkowo: lapanie ok. 10000 danych i wysylac takie duze paczki (np)
-    if (!Firebase.RTDB.pushInt(&firebase_data, "/acc/ox", random(1, 8)) ||
-        !Firebase.RTDB.pushInt(&firebase_data, "/acc/oy", random(1, 8)) ||
-        !Firebase.RTDB.pushInt(&firebase_data, "/acc/oz", random(1, 8)))
+    if (!Firebase.RTDB.pushFloat(&firebase_data, "/acc/ox", accelerometer->acceleration.x) ||
+        !Firebase.RTDB.pushFloat(&firebase_data, "/acc/oy", accelerometer->acceleration.y) ||
+        !Firebase.RTDB.pushFloat(&firebase_data, "/acc/oz", accelerometer->acceleration.z))
         Serial << TAG_FIREBASE << "Sample dropped.\n";
 }

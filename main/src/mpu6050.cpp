@@ -3,7 +3,7 @@
 #include "tags.h"
 
 Adafruit_MPU6050 mpu;
-sensors_event_t acc, gyr;
+static sensors_event_t temp;
 
 bool mpu_initialize()
 {
@@ -31,9 +31,10 @@ bool mpu_initialize()
 
 bool mpu_collect_data(sensors_event_t *accelerometer, sensors_event_t *gyroscope)
 {
-    if (accelerometer != null && gyroscope != null)
-        // sprawdzić czy accelerometer i gyroscope jest nullem
-        return mpu.getEvent(&accelerometer, &gyroscope, null);
-    Serial << TAG_MPU;
+    if (accelerometer != NULL && gyroscope != NULL)
+    {
+        return mpu.getEvent(accelerometer, gyroscope, &temp);
+    }
+    Serial << TAG_MPU << "Invalid data queue parameter.\n";
     return false;
 }

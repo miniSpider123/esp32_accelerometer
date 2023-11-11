@@ -2,11 +2,7 @@
 
 #include <Arduino.h>
 #include <WiFi.h>
-
-#define ESP_WIFI_SSID "wunsz_rzeczny"
-#define ESP_WIFI_PASS "9eed0d14371c"
-#define ESP_MAXIMUM_RETRY 10
-#define DELAY_TIME 10000
+#include "data.h"
 
 bool wifi_connect();
 

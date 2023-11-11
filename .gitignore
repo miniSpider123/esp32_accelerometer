@@ -1,2 +1,3 @@
 build/build.options.json
 build/.last-used
+src/data.h
