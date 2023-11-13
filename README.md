@@ -1,2 +1,2 @@
 # esp32_measure_activity 
-ESP32-C3 project for acquisition accelerometer data and sending to database.
+ESP32-Wroom project for acquisition accelerometer and gyroscope data and sending them to database.
