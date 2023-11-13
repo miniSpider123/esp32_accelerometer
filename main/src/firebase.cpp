@@ -1,6 +1,7 @@
 #include "firebase.h"
 #include "print_string.h"
 #include "tags.h"
+#include "data.h"
 
 FirebaseData firebase_data;
 FirebaseAuth firebase_auth;
@@ -9,7 +10,7 @@ FirebaseJson acc_X;
 FirebaseJson acc_Y;
 FirebaseJson acc_Z;
 
-void firebase_connect()
+bool firebase_connect()
 {
     String uid;
     String path;
@@ -20,7 +21,8 @@ void firebase_connect()
     firebase_auth.user.password = USER_PASSWORD;
 
     Serial << TAG_FIREBASE << "Connecting to database...\n";
-    while (1)
+    int retry_count = FIREBASE_MAXIMUM_RETRY;
+    while (retry_count--)
     {
         Firebase.begin(&firebase_config, &firebase_auth);
         Firebase.reconnectWiFi(true);
@@ -41,9 +43,10 @@ void firebase_connect()
         else
         {
             Serial << TAG_FIREBASE << "Successful connecting to stream.\n";
-            break;
+            return true;
         }
     }
+    return false;
 }
 
 void firebase_send_data(sensors_event_t *accelerometer, sensors_event_t *gyroscope)

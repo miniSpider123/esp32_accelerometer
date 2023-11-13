@@ -9,5 +9,5 @@
 
 #include "data.h"
 
-void firebase_connect();
+bool firebase_connect();
 void firebase_send_data(sensors_event_t *accelerometer, sensors_event_t *gyroscope);

@@ -10,13 +10,16 @@ static sensors_event_t gyroscope;
 void setup()
 {
     Serial.begin(115200);
-    if (wifi_connect())
+    if (!wifi_connect() && !firebase_connect() && !mpu_initialize())
     {
-        firebase_connect();
-        if (!mpu_initialize())
-        {
-            esp_reset();
-        }
+        // if (!firebase_connect() && !mpu_initialize())
+        // {
+        esp_reset();
+        //     }
+        // }
+        // else
+        // {
+        //     esp_reset();
     }
 }
 

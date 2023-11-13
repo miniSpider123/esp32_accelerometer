@@ -7,11 +7,6 @@ static sensors_event_t temp;
 
 bool mpu_initialize()
 {
-    // bool val = mpu.begin();
-    // if (val)
-    //     return true;
-    // else
-    //     return false;
     int retry_count = MPU_MAXIMUM_RETRY;
     while (retry_count--)
     {
