@@ -19,34 +19,21 @@ bool check_timer_callback(void *)
 void setup()
 {
     Serial.begin(115200);
-    mpu_initialize();
-    // if (!wifi_connect() && !firebase_connect() && !mpu_initialize())
-    // {
-    //     // if (!firebase_connect() && !mpu_initialize())
-    //     // {
-    //     esp_reset();
-    //     //     }
-    //     // }
-    //     // else
-    //     // {
-    //     //     esp_reset();
-    // }
+    if (!wifi_connect() && !firebase_connect() && !mpu_initialize())
+    {
+        esp_reset();
+    }
     timer.every(1, check_timer_callback);
 }
 
 void loop()
 {
     timer.tick();
-
-    // mpu_collect_data(&accelerometer, &gyroscope);
-    // if (wifi_check_status() != WL_CONNECTED)
-    // {
-    //     Serial.println("[Communication] Connection with WiFi network lost.");
-    //     wifi_connect();
-    //     firebase_connect();
-    // }
-
-    // if (mpu_collect_data(&accelerometer, &gyroscope))
-    //     firebase_send_data(&accelerometer, &gyroscope);
-    // delay(10000);
+    if (wifi_check_status() != WL_CONNECTED)
+    {
+        Serial.println("[Communication] Connection with WiFi network lost.");
+        wifi_connect();
+        firebase_connect();
+    }
+    firebase_send_data(&accelerometer, &gyroscope);
 }

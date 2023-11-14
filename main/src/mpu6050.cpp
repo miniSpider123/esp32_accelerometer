@@ -31,17 +31,6 @@ bool mpu_collect_data(sensors_event_t *accelerometer, sensors_event_t *gyroscope
 {
     if (accelerometer != NULL && gyroscope != NULL)
     {
-        Serial.print(accelerometer->acceleration.x);
-        Serial.print(",");
-        Serial.print(accelerometer->acceleration.y);
-        Serial.print(",");
-        Serial.print(accelerometer->acceleration.z);
-        Serial.print(",");
-        Serial.print(gyroscope->gyro.x);
-        Serial.print(",");
-        Serial.print(gyroscope->gyro.y);
-        Serial.print(",");
-        Serial.println(gyroscope->gyro.z);
         return mpu.getEvent(accelerometer, gyroscope, &temp);
     }
     Serial << TAG_MPU << "Invalid data queue parameter.\n";
