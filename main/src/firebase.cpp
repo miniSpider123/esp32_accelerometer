@@ -61,4 +61,8 @@ void firebase_send_data(sensors_event_t *accelerometer, sensors_event_t *gyrosco
         !Firebase.RTDB.pushFloat(&firebase_data, "/acc/oy", accelerometer->acceleration.y) ||
         !Firebase.RTDB.pushFloat(&firebase_data, "/acc/oz", accelerometer->acceleration.z))
         Serial << TAG_FIREBASE << "Sample dropped.\n";
+    if (!Firebase.RTDB.pushFloat(&firebase_data, "/gyr/ox", gyroscope->gyro.x) ||
+        !Firebase.RTDB.pushFloat(&firebase_data, "/gyr/oy", gyroscope->gyro.y) ||
+        !Firebase.RTDB.pushFloat(&firebase_data, "/gyr/oz", gyroscope->gyro.z))
+        Serial << TAG_FIREBASE << "Sample dropped.\n";
 }
