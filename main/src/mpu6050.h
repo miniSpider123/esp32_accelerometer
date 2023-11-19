@@ -7,4 +7,4 @@
 
 bool mpu_initialize();
 
-bool mpu_collect_data(sensors_event_t *accelerometer, sensors_event_t *gyroscope);
+bool mpu_collect_data(QueueHandle_t queue_acc, QueueHandle_t queue_gyr);

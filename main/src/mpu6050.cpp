@@ -6,6 +6,8 @@
 #include <sys/time.h>
 
 Adafruit_MPU6050 mpu;
+sensors_event_t accelerometer;
+sensors_event_t gyroscope;
 static sensors_event_t temp;
 
 bool mpu_initialize()
@@ -27,11 +29,14 @@ bool mpu_initialize()
     return false;
 }
 
-bool mpu_collect_data(sensors_event_t *accelerometer, sensors_event_t *gyroscope)
+bool mpu_collect_data(QueueHandle_t queue_acc, QueueHandle_t queue_gyr)
 {
-    if (accelerometer != NULL && gyroscope != NULL)
+    if (queue_acc != NULL && queue_gyr != NULL)
     {
-        return mpu.getEvent(accelerometer, gyroscope, &temp);
+        mpu.getEvent(&accelerometer, &gyroscope, &temp);
+        xQueueSend(queue_acc, &accelerometer, portMAX_DELAY);
+        xQueueSend(queue_gyr, &gyroscope, portMAX_DELAY);
+        return true;
     }
     Serial << TAG_MPU << "Invalid data queue parameter.\n";
     return false;
