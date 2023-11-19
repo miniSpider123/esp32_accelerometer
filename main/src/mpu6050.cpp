@@ -5,10 +5,14 @@
 #include <stdio.h>
 #include <sys/time.h>
 
+//----------------------------------------------------------------
+
 Adafruit_MPU6050 mpu;
 sensors_event_t accelerometer;
 sensors_event_t gyroscope;
 static sensors_event_t temp;
+
+//----------------------------------------------------------------
 
 bool mpu_initialize()
 {

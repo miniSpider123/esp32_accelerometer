@@ -3,12 +3,16 @@
 #include "tags.h"
 #include "data.h"
 
+//----------------------------------------------------------------
+
 FirebaseData firebase_data;
 FirebaseAuth firebase_auth;
 FirebaseConfig firebase_config;
 FirebaseJson acc_X;
 FirebaseJson acc_Y;
 FirebaseJson acc_Z;
+
+//----------------------------------------------------------------
 
 bool firebase_connect()
 {

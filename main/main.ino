@@ -5,12 +5,17 @@
 #include "src/mpu6050.h"
 #include "src/esp_functions.h"
 
+//----------------------------------------------------------------
+
 auto timer = timer_create_default();
+
 TaskHandle_t collect_data_thread;
 TaskHandle_t send_data_thread;
 QueueHandle_t queue_acc;
 QueueHandle_t queue_gyr;
-// static sensors_event_t gyroscope[100000];
+
+//----------------------------------------------------------------
+
 bool check_timer_callback(void *)
 {
     mpu_collect_data(queue_acc, queue_gyr);
@@ -53,25 +58,19 @@ void setup()
     Serial.println((int)queue_acc);
     timer.every(1, check_timer_callback);
 
-    // queue_acc = xQueueCreate(100000, sizeof(sensors_event_t));
-    // queue_gyr = xQueueCreate(100000, sizeof(sensors_event_t));
-    // if(queue_acc == NULL && queue_gyr == NULL){
-    //     Serial.println("Error creating the queue.");
-    // }
-
     if (!wifi_connect() || !firebase_connect() || !mpu_initialize())
     {
         esp_reset();
     }
 
-    Serial.println("Creating thread Collect data.");
+    Serial.println("[ESP] Creating thread Collect data.");
 
     xTaskCreatePinnedToCore(
         collect_data_code,    /* Task function. */
         "Collect data",       /* name of task. */
         10000,                /* Stack size of task */
         NULL,                 /* parameter of the task */
-        1,                    /* priority of the task */
+        2,                    /* priority of the task */
         &collect_data_thread, /* Task handle to keep track of created task */
         0);                   /* pin task to core 0 */
 
@@ -88,7 +87,6 @@ void setup()
     Serial.println("All threads created.");
 }
 
-void loop() // core 1
+void loop()
 {
-    // timer.tick();
 }
