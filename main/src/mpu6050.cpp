@@ -14,7 +14,7 @@ static sensors_event_t temp;
 
 //----------------------------------------------------------------
 
-bool mpu_initialize()
+bool mpu_initialize(void)
 {
     int retry_count = MPU_MAXIMUM_RETRY;
     while (retry_count--)

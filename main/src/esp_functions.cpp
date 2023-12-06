@@ -9,7 +9,7 @@
 
 //----------------------------------------------------------------
 
-void esp_reset()
+void esp_reset(void)
 {
     Serial << TAG_ESP << "Device will restart in " << RESET_DELAY / 1000 << " seconds.";
     delay(RESET_DELAY);

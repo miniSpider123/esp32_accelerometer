@@ -53,9 +53,7 @@ void setup()
     Serial.begin(115200);
 
     queue_acc = NULL;
-    Serial.println((int)queue_acc);
     esp_create_data_queue(&queue_acc, &queue_gyr);
-    Serial.println((int)queue_acc);
     timer.every(1, check_timer_callback);
 
     if (!wifi_connect() || !firebase_connect() || !mpu_initialize())
@@ -74,7 +72,8 @@ void setup()
         &collect_data_thread, /* Task handle to keep track of created task */
         0);                   /* pin task to core 0 */
 
-    Serial.println("Creating thread Send data.");
+    Serial.println("[ESP] Creating thread Send data.");
+
     xTaskCreatePinnedToCore(
         send_data_code,    /* Task function. */
         "Send data",       /* name of task. */
@@ -84,7 +83,7 @@ void setup()
         &send_data_thread, /* Task handle to keep track of created task */
         1);                /* pin task to core 1 */
 
-    Serial.println("All threads created.");
+    Serial.println("[ESP] All threads created.");
 }
 
 void loop()

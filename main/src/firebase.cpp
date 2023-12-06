@@ -14,7 +14,7 @@ FirebaseJson acc_Z;
 
 //----------------------------------------------------------------
 
-bool firebase_connect()
+bool firebase_connect(void)
 {
     String uid;
     String path;
@@ -56,7 +56,6 @@ bool firebase_connect()
 void firebase_send_data(sensors_event_t acc, sensors_event_t gyr)
 {
     Serial << TAG_FIREBASE << "Sending data to firebase.\n";
-    // Serial << (acc);
     if (!Firebase.RTDB.pushFloat(&firebase_data, "/acc/ox", acc.acceleration.x) ||
         !Firebase.RTDB.pushFloat(&firebase_data, "/acc/oy", acc.acceleration.y) ||
         !Firebase.RTDB.pushFloat(&firebase_data, "/acc/oz", acc.acceleration.z))
