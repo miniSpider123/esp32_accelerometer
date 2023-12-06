@@ -2,7 +2,9 @@
 #include "print_string.h"
 #include "tags.h"
 
-bool wifi_connect()
+//----------------------------------------------------------------
+
+bool wifi_connect(void)
 {
   WiFi.disconnect();
   WiFi.begin(ESP_WIFI_SSID, ESP_WIFI_PASS);
@@ -28,7 +30,7 @@ bool wifi_connect()
   }
 }
 
-wl_status_t wifi_check_status()
+wl_status_t wifi_check_status(void)
 {
   return WiFi.status();
 }
